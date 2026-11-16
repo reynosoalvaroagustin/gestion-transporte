@@ -1,0 +1,40 @@
+@host = http://localhost:3001/api
+
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "email": "admin@mail.com", "contrasena": "123456" }
+
+###
+@token = {{login.response.body.token}}
+
+### Listar
+GET {{host}}/conductores
+Authorization: Bearer {{token}}
+
+### Crear
+POST {{host}}/conductores
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Juan", "apellido": "Pérez",
+  "numero_documento": "30123456", "numero_licencia": "LIC-0001",
+  "fecha_alta_licencia": "2020-03-10", "fecha_vencimiento_licencia": "2030-03-10"
+}
+
+### Actualizar
+PUT {{host}}/conductores/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Juan", "apellido": "Pérez Gómez",
+  "numero_documento": "30123456", "numero_licencia": "LIC-0001",
+  "fecha_alta_licencia": "2020-03-10", "fecha_vencimiento_licencia": "2030-03-10"
+}
+
+### Eliminar
+DELETE {{host}}/conductores/1
+Authorization: Bearer {{token}}

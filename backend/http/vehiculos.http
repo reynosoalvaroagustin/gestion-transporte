@@ -1,0 +1,44 @@
+@host = http://localhost:3001/api
+
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "email": "admin@mail.com", "contrasena": "123456" }
+
+###
+@token = {{login.response.body.token}}
+
+### Listar
+GET {{host}}/vehiculos?buscar=
+Authorization: Bearer {{token}}
+
+### Crear
+POST {{host}}/vehiculos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "marca": "Mercedes", "modelo": "Sprinter", "patente": "AB123CD", "anio": 2021, "capacidad_carga": 1500 }
+
+### Obtener
+GET {{host}}/vehiculos/1
+Authorization: Bearer {{token}}
+
+### Actualizar
+PUT {{host}}/vehiculos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "marca": "Mercedes", "modelo": "Sprinter 515", "patente": "AB123CD", "anio": 2022, "capacidad_carga": 1800 }
+
+### Eliminar
+DELETE {{host}}/vehiculos/1
+Authorization: Bearer {{token}}
+
+### ID invalido (400)
+GET {{host}}/vehiculos/abc
+Authorization: Bearer {{token}}
+
+### No existe (404)
+GET {{host}}/vehiculos/9999
+Authorization: Bearer {{token}}
