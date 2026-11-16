@@ -1,0 +1,49 @@
+@host = http://localhost:3001/api
+
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "email": "admin@mail.com", "contrasena": "123456" }
+
+###
+@token = {{login.response.body.token}}
+
+### Crear viaje
+POST {{host}}/viajes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehiculo_id": 1, "conductor_id": 1,
+  "fecha_salida": "2026-11-01T08:00", "fecha_llegada": "2026-11-01T14:30",
+  "origen": "La Rioja", "destino": "Córdoba", "kilometros": 450,
+  "observaciones": "Sin novedades"
+}
+
+### Listar todos (incluye total_km)
+GET {{host}}/viajes
+Authorization: Bearer {{token}}
+
+### Historial por vehiculo
+GET {{host}}/viajes?vehiculo_id=1
+Authorization: Bearer {{token}}
+
+### Historial por conductor
+GET {{host}}/viajes?conductor_id=1
+Authorization: Bearer {{token}}
+
+### Actualizar
+PUT {{host}}/viajes/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehiculo_id": 1, "conductor_id": 1,
+  "fecha_salida": "2026-11-01T08:00", "fecha_llegada": "2026-11-01T15:00",
+  "origen": "La Rioja", "destino": "Córdoba", "kilometros": 460, "observaciones": ""
+}
+
+### Eliminar
+DELETE {{host}}/viajes/1
+Authorization: Bearer {{token}}
