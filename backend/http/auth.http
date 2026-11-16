@@ -1,0 +1,28 @@
+@host = http://localhost:3001/api
+
+### Registro
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{ "nombre": "Admin", "email": "admin@mail.com", "contrasena": "123456" }
+
+### Login
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "email": "admin@mail.com", "contrasena": "123456" }
+
+### Perfil (requiere token)
+@token = {{login.response.body.token}}
+GET {{host}}/auth/perfil
+Authorization: Bearer {{token}}
+
+### Sin token (debe dar 401)
+GET {{host}}/vehiculos
+
+### Validacion (debe dar 400)
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{ "nombre": "", "email": "malo", "contrasena": "1" }
